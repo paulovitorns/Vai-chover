@@ -28,7 +28,8 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
 
     private boolean confirmedExit = false;
-    private Menu                menu;
+    private Menu        menu;
+    private Fragment    currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,12 @@ public class MainActivity extends BaseActivity
             if(confirmedExit) {
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.toast_exit_alert), Toast.LENGTH_SHORT).show();
-                loadDefaultFragment();
-                confirmedExit = true;
+                if(currentFragment == MapsFragment.newInstance()){
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_exit_alert), Toast.LENGTH_SHORT).show();
+                    confirmedExit = true;
+                }else{
+                    loadDefaultFragment();
+                }
             }
         }
     }
@@ -127,16 +131,23 @@ public class MainActivity extends BaseActivity
     @Override
     public void loadDefaultFragment() {
 
-        MapsFragment fragment = MapsFragment.newInstance();
+        currentFragment = MapsFragment.newInstance();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameLayout, fragment);
+        transaction.replace(R.id.frameLayout, currentFragment);
         transaction.commit();
     }
 
     @Override
     public void changeFragment(Fragment fragment) {
+        if(confirmedExit)
+            confirmedExit = false;
 
+        currentFragment = fragment;
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, currentFragment);
+        transaction.commit();
     }
 
     @Override
