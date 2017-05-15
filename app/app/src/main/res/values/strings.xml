@@ -1,0 +1,35 @@
+<resources>
+
+    <string name="app_name">Vai chover</string>
+
+    <string name="default_var">...</string>
+
+    <!--Common texts-->
+    <string name="toast_exit_alert">Pressione novamente para sair</string>
+
+    <!--Title Navigation-->
+    <string name="window_lauch">Bem vindo!</string>
+    <string name="window_dash">dashboard</string>
+
+    <!--Empty State-->
+    <string name="btn_retry">tente novamente</string>
+    <string name="btn_conection">conectar a internet</string>
+    <string name="btn_search">nova busca</string>
+    <string name="empty_state">Não encontramos nenhuma localização com a sua busca!</string>
+    <string name="server_timeout">O servidor não esta respondendo!</string>
+    <string name="server_error">Ocorreu com nosso servidor!</string>
+    <string name="no_connection">Você não esta conectado a internet!</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--Menu-->
+    <string name="menu_home">ínicio</string>
+    <string name="menu_search">buscar região</string>
+    <string name="menu_preferences">suas preferências</string>
+    <string name="menu_logout">sair</string>
+
+</resources>
