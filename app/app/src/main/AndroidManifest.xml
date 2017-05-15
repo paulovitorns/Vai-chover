@@ -15,6 +15,11 @@
         android:roundIcon="@mipmap/ic_rounded_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/gmapsApiKey" />
+
         <activity
             android:name=".ui.view.activity.LaunchActivity"
             android:screenOrientation="portrait"

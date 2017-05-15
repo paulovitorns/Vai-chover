@@ -18,6 +18,11 @@ import br.com.vaichover.util.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * © Copyright 2017.
+ * Autor : Paulo Sales - paulovitorns@gmail.com
+ */
+
 public class LaunchActivity extends AppCompatActivity {
 
     @Bind(R.id.imgIcon)     ImageView       imgIcon;
