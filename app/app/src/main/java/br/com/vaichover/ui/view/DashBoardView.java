@@ -24,4 +24,7 @@ public interface DashBoardView extends BaseView {
 
     void setPic();
 
+    void hideNavigationIcon();
+
+    void showNavigationIcon();
 }

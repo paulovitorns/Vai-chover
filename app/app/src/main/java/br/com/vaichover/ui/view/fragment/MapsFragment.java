@@ -56,7 +56,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     private Marker          marker;
 
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 200;
-    private static final int ZOOM_MAPS = 12;
+    private static final int ZOOM_MAPS = 10;
 
     private boolean firstLoad = true;
 
@@ -204,21 +204,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(onlyMarker, ZOOM_MAPS);
         gMap.moveCamera(updateCam);
 
-        drawMarker(new LatLng(-23.4998071,-46.6468254));
-
     }
 
     @Override
     public void drawMarker(LatLng latLng) {
-
         MarkerOptions opt = new MarkerOptions();
-
         opt.position(latLng);
-
         opt.title("teste role");
-
         opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-
         //add the marker and
         gMap.addMarker(opt);
     }

@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+            this.showNavigationIcon();
             this.loadDefaultFragment();
         } else if (id == R.id.nav_search) {
 
@@ -143,9 +144,9 @@ public class MainActivity extends BaseActivity
     public void setUserInfo(UserPreferences user) {
         this.user = user;
 
-        TextView txName     = (TextView) navigationView.findViewById(R.id.txNameUser);
-        TextView txLocation = (TextView) navigationView.findViewById(R.id.txLocationUser);
-        this.imgProfile     = (CircleImageView) navigationView.findViewById(R.id.imgProfile);
+        TextView txName     = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txNameUser);
+        TextView txLocation = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txLocationUser);
+        this.imgProfile     = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgProfile);
 
         if(user.getName() != null || !user.getName().isEmpty())
             txName.setText(user.getName());
@@ -178,6 +179,8 @@ public class MainActivity extends BaseActivity
     public void changeFragment(Fragment fragment) {
         if(confirmedExit)
             confirmedExit = false;
+
+        this.hideNavigationIcon();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
@@ -214,5 +217,19 @@ public class MainActivity extends BaseActivity
 
         Bitmap bitmap = BitmapFactory.decodeFile(user.getImgNameResource(), bmOptions);
         imgProfile.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void hideNavigationIcon() {
+        MenuItem mapsMenu = menu.findItem(R.id.action_gmaps);
+        MenuItem listMenu = menu.findItem(R.id.action_list);
+        listMenu.setVisible(false);
+        mapsMenu.setVisible(false);
+    }
+
+    @Override
+    public void showNavigationIcon() {
+        MenuItem listMenu = menu.findItem(R.id.action_list);
+        listMenu.setVisible(true);
     }
 }

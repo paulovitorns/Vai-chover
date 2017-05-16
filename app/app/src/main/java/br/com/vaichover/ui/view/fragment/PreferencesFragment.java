@@ -188,6 +188,8 @@ public class PreferencesFragment extends Fragment implements PreferencesView {
 
         CustomDialog customDialog = new CustomDialog(getContext(), title, msg);
         customDialog.show();
+
+        ((DashBoardView)getActivity()).setUserInfo(user);
     }
 
     @OnClick(R.id.fabCamera)
