@@ -6,6 +6,7 @@
 
     <!--Common texts-->
     <string name="toast_exit_alert">Pressione novamente para sair</string>
+    <string name="user_name">Olá, visitante!</string>
 
     <!--Title Navigation-->
     <string name="window_lauch">Bem vindo!</string>
@@ -33,5 +34,19 @@
     <string name="menu_search">buscar região</string>
     <string name="menu_preferences">suas preferências</string>
     <string name="menu_logout">sair</string>
+
+    <!--Hints Profile-->
+    <string name="hint_name">Nome</string>
+    <string name="hint_location">Sua localização padrão</string>
+    <string name="hint_range">Escolha o raio de busca</string>
+    <string name="hint_range_initial">5 km</string>
+    <string name="hint_range_final">50 km</string>
+
+    <!--Common Text-->
+    <string name="btn_save">salvar</string>
+
+    <!--validate msg errors-->
+    <string name="error_empty_name">digite seu nome</string>
+    <string name="error_empty_locale">digite a sua localização padrão</string>
 
 </resources>

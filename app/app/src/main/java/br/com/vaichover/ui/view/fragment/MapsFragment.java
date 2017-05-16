@@ -69,7 +69,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_maps, container, false);
-        setHasOptionsMenu(true);
+
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

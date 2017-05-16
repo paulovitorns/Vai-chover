@@ -28,7 +28,7 @@ public class LaunchActivity extends AppCompatActivity {
     @Bind(R.id.imgIcon)     ImageView       imgIcon;
     @Bind(R.id.container)   RelativeLayout  container;
 
-    private long WAIT_DELAY = 3000;
+    private long WAIT_DELAY = 2000;
     public static final int STARTUP_DELAY = 300;
     public static final int ANIM_ITEM_DURATION = 1000;
     public static final int ITEM_DELAY = 300;

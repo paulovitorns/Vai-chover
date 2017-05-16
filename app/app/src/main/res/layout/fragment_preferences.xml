@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_default"
+        android:paddingRight="@dimen/margin_default">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/margin_big"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/container_img_profile_size"
+                    android:layout_height="@dimen/container_img_profile_size"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="left">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="@dimen/img_profile_size"
+                        android:layout_height="@dimen/img_profile_size"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_account_circle"/>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:layout_marginBottom="@dimen/margin_default"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        app:fabSize="mini"
+                        android:src="@drawable/ic_photo_camera_white_24dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edtLayoutName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColorHint="@color/white">
+
+                        <EditText
+                            android:id="@+id/edtName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edt_common_size"
+                            android:background="@drawable/view_edittext_background"
+                            android:inputType="textCapWords"
+                            android:hint="@string/hint_name"
+                            android:textSize="@dimen/font_normal"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edtLayoutLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColorHint="@color/white">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/edtLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edt_common_size"
+                            android:background="@drawable/view_edittext_background"
+                            android:inputType="textCapWords"
+                            android:hint="@string/hint_location"
+                            android:textSize="@dimen/font_normal"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big"
+                    android:text="@string/hint_range"
+                    android:textSize="@dimen/font_normal"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"/>
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                    android:id="@+id/rangeSeekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_extra"
+                    app:corner_radius="10"
+                    app:min_value="5"
+                    app:max_value="50"
+                    app:bar_color="@color/white"
+                    app:bar_highlight_color="@color/colorPrimary"
+                    app:left_thumb_color="@color/colorAccent"
+                    app:left_thumb_color_pressed="@color/colorPrimary"
+                    app:data_type="_integer"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_micro"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/txInitial"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/hint_range_initial"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"/>
+
+                    <TextView
+                        android:id="@+id/txLast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/hint_range_final"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:background="@color/colorAccent"
+                android:text="@string/btn_save"
+                android:textAllCaps="false"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
