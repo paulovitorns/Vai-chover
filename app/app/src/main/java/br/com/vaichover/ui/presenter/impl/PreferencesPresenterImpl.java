@@ -74,13 +74,6 @@ public class PreferencesPresenterImpl implements PreferencesPresenter, Preferenc
     @Override
     public boolean validateRegisterData() {
 
-        if(this.user.getName().isEmpty()){
-            this.view.setNameEmptyError();
-            return false;
-        }else{
-            this.view.setNomeDefaultState();
-        }
-
         if(this.user.getAddress().isEmpty()){
             this.view.setLocaleEmptyError();
             return false;

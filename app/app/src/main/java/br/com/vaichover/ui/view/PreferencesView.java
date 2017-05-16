@@ -10,27 +10,17 @@ import br.com.vaichover.model.UserPreferences;
  * Autor : Paulo Sales - paulovitorns@gmail.com
  */
 
-public interface PreferencesView extends BaseFragmentView {
+public interface PreferencesView extends BaseView {
 
     void setDataInfoUser(UserPreferences user);
 
     void onClickBtnSave();
-
-    void setNameEmptyError();
-
-    void setNomeDefaultState();
 
     void setLocaleEmptyError();
 
     void setLocaleDefaultState();
 
     void showSuccessDialog();
-
-    void dispatchTakePictureIntent();
-
-    File createImageFile() throws IOException;
-
-    void setPic();
 
     void dialogError(String title, String msg);
 }

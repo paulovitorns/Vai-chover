@@ -7,12 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:name=".VaiChoverApp"
         android:allowBackup="true"
@@ -21,16 +15,6 @@
         android:roundIcon="@mipmap/ic_rounded_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/gmapsApiKey" />
@@ -48,6 +32,10 @@
         <activity
             android:name=".ui.view.activity.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.view.activity.PreferencesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
     </application>

@@ -25,11 +25,6 @@ public class MainPresenterImpl implements MainPresenter {
     public void init() {
         this.service = new SessionManagerServiceImpl();
         this.view.loadDefaultFragment();
-        Session session = this.service.getCurrentSession();
-
-        if(session != null && session.getUser() != null){
-            this.view.setUserInfo(session.getUser());
-        }
     }
 
     @Override

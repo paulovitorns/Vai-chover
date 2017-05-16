@@ -81,6 +81,27 @@ abstract class BaseActivity extends AppCompatActivity {
      *
      * @param resId resource id da string do titulo do modal
      */
+    public void setupNavigateActionBarHome(int resId) {
+
+        toolbar.setTitle(resId);
+
+        setSupportActionBar(toolbar);
+
+        this.actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+
+    }
+
+    /**
+     * Montar toolbar comum
+     * <p>
+     *     Metodo usado para exibir um toolbar comum
+     * </p>
+     *
+     * @param resId resource id da string do titulo do modal
+     */
     public void setupNavigateActionBar(int resId) {
 
         toolbar.setTitle(resId);
@@ -114,9 +135,9 @@ abstract class BaseActivity extends AppCompatActivity {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            icon.setColorFilter(getColor(android.R.color.holo_green_dark), PorterDuff.Mode.SRC_ATOP);
+            icon.setColorFilter(getColor(android.R.color.holo_green_light), PorterDuff.Mode.SRC_ATOP);
         }else{
-            icon.setColorFilter(getResources().getColor(android.R.color.holo_green_dark), PorterDuff.Mode.SRC_ATOP);
+            icon.setColorFilter(getResources().getColor(android.R.color.holo_green_light), PorterDuff.Mode.SRC_ATOP);
         }
 
         toolbar.setNavigationIcon(icon);

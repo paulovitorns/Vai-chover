@@ -12,6 +12,8 @@ import br.com.vaichover.model.ApiResponseType;
 
 public interface BaseView {
 
+    void setupNavigateActionBarHome(int resId);
+
     void setupNavigateActionBar(int resId);
 
     void setupNavigateActionBarModal(int resId);

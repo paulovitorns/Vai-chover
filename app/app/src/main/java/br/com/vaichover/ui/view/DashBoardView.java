@@ -12,8 +12,6 @@ import br.com.vaichover.model.UserPreferences;
 
 public interface DashBoardView extends BaseView {
 
-    void setUserInfo(UserPreferences user);
-
     void loadDefaultFragment();
 
     void changeFragment(Fragment fragment);
@@ -22,9 +20,4 @@ public interface DashBoardView extends BaseView {
 
     void onTapDashList();
 
-    void setPic();
-
-    void hideNavigationIcon();
-
-    void showNavigationIcon();
 }

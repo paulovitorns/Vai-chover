@@ -10,7 +10,8 @@
 
     <!--Title Navigation-->
     <string name="window_lauch">Bem vindo!</string>
-    <string name="window_dash">dashboard</string>
+    <string name="window_dash">Desafio LuizaLabs</string>
+    <string name="window_preferences">Preferências do Usuário</string>
 
     <!--Empty State-->
     <string name="btn_retry">tente novamente</string>
@@ -28,12 +29,8 @@
     <string name="action_info_scale">escala termométrica</string>
     <string name="action_show_map">ver mapa</string>
     <string name="action_show_list">ver lista</string>
-
-    <!--Menu-->
-    <string name="menu_home">ínicio</string>
-    <string name="menu_search">buscar região</string>
-    <string name="menu_preferences">suas preferências</string>
-    <string name="menu_logout">sair</string>
+    <string name="action_search">nova busca</string>
+    <string name="action_close">fechar</string>
 
     <!--Hints Profile-->
     <string name="hint_name">Nome</string>
@@ -41,6 +38,8 @@
     <string name="hint_range">Escolha o raio de busca</string>
     <string name="hint_range_initial">5 km</string>
     <string name="hint_range_final">50 km</string>
+    <string name="hint_celsius">toque para visualizar\nos graus em\ncelsius</string>
+    <string name="hint_fahrenheit">toque para visualizar\nos graus em\nfahrenheit</string>
 
     <!--Common Text-->
     <string name="btn_save">salvar</string>
