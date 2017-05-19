@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -30,6 +29,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import br.com.vaichover.R;
+import br.com.vaichover.model.OpenWeatherMap;
+import br.com.vaichover.model.OpenWeatherMapResult;
+import br.com.vaichover.model.UserPreferences;
+import br.com.vaichover.ui.adapter.WeatherInfoAdapter;
 import br.com.vaichover.ui.presenter.MapsPresenter;
 import br.com.vaichover.ui.presenter.impl.MapsPresenterImpl;
 import br.com.vaichover.ui.view.DashBoardView;
@@ -43,14 +46,22 @@ import butterknife.OnClick;
  * Autor : Paulo Sales - paulovitorns@gmail.com
  */
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MapsFragmentView {
+public class MapsFragment extends Fragment implements MapsFragmentView,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraMoveStartedListener,
+        GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnInfoWindowLongClickListener,
+        GoogleMap.OnInfoWindowCloseListener{
 
     private View            view;
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap       gMap;
     private Location        myLocation;
     private MapsPresenter   presenter;
-    private Marker          marker;
 
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 200;
     private static final int ZOOM_MAPS = 10;
@@ -130,7 +141,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         this.gMap = googleMap;
+
+        // Hide the zoom controls as the button panel will cover it.
+        this.gMap.getUiSettings().setZoomControlsEnabled(false);
+
+        this.gMap.setOnCameraMoveStartedListener(this);
+        this.gMap.setOnCameraIdleListener(this);
+        this.gMap.setInfoWindowAdapter(new WeatherInfoAdapter(getActivity()));
+        this.gMap.setOnMarkerClickListener(this);
+        this.gMap.setOnInfoWindowClickListener(this);
+        this.gMap.setOnInfoWindowCloseListener(this);
+        this.gMap.setOnInfoWindowLongClickListener(this);
 
         try {
             // Customise the styling of the base map using a JSON object defined
@@ -150,7 +173,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @OnClick(R.id.fabGoToLocation)
     @Override
     public void onClickFabLocale() {
-        presenter.getMyLocation();
+        presenter.getMySavedLocation();
+        presenter.userHasDrag();
     }
 
     @Override
@@ -163,10 +187,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void drawMarker() {
 
-        if(marker != null){
-            marker.remove();
-        }
-
         CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(
                 new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                 ZOOM_MAPS);
@@ -176,37 +196,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
-    public void drawMarker(LatLng latLng) {
-        MarkerOptions opt = new MarkerOptions();
-        opt.position(latLng);
-        opt.title("teste role");
-        opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-        //add the marker and
-        gMap.addMarker(opt);
+    public void drawMarker(OpenWeatherMapResult result) {
+
+        String temp = getString(R.string.temp);
+        temp = temp.replace("...", String.valueOf(Math.round(result.getMain().getTemp())));
+
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(result.getCoord().getLat(), result.getCoord().getLon()))
+                .title(result.getName())
+                .snippet(temp)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp))
+        ).setTag(result);
     }
 
     @Override
-    public void drawMarkerWithAnimation() {
-
-        if(marker != null){
-            marker.remove();
-        }
-
-        LatLng onlyMarker;
-
-        onlyMarker = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-        MarkerOptions opt = new MarkerOptions();
-
-        opt.position(onlyMarker);
-        opt.title("minha localização");
-        opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-
-        //add the marker and
-        marker = gMap.addMarker(opt);
-
-        CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(onlyMarker, ZOOM_MAPS);
-        gMap.animateCamera(updateCam);
-
+    public void clearAllMarkers() {
+        gMap.clear();
     }
 
     @Override
@@ -223,6 +228,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public GoogleApiClient getGmapsClient() {
         return this.mGoogleApiClient;
+    }
+
+    @Override
+    public void updateMainView(OpenWeatherMap map, UserPreferences user) {
+        ((DashBoardView)getActivity()).updateWeathersForNewLocation(map, user);
     }
 
     @Override
@@ -259,4 +269,39 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         }
     }
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if(i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+            presenter.userHasDrag();
+        }
+    }
+
+    @Override
+    public void onCameraIdle() {
+        if(presenter.hasToGetNewLocation())
+            presenter.requestWeathers(gMap.getCameraPosition().target);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+    }
+
+    @Override
+    public void onInfoWindowClose(Marker marker) {
+
+    }
+
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        presenter.uiHasDrag();
+        return false;
+    }
+
 }

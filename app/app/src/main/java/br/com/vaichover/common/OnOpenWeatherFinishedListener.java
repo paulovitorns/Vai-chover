@@ -8,5 +8,9 @@ import br.com.vaichover.model.OpenWeatherMap;
  */
 
 public interface OnOpenWeatherFinishedListener extends BaseCommonListener {
+
     void onSuccess(OpenWeatherMap openWeatherMap);
+
+    void onSuccessNewPlaces(OpenWeatherMap openWeatherMap);
+
 }

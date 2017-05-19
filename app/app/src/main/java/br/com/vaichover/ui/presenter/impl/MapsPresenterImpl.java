@@ -19,6 +19,7 @@ import br.com.vaichover.model.ApiResponseType;
 import br.com.vaichover.model.OpenWeatherMap;
 import br.com.vaichover.model.OpenWeatherMapResult;
 import br.com.vaichover.model.Session;
+import br.com.vaichover.model.UserLastDraggedLocation;
 import br.com.vaichover.model.UserPreferences;
 import br.com.vaichover.ui.presenter.MapsPresenter;
 import br.com.vaichover.ui.view.MapsFragmentView;
@@ -29,7 +30,7 @@ import br.com.vaichover.ui.view.MapsFragmentView;
  * Empresa : Skatavel app.
  */
 
-public class MapsPresenterImpl implements MapsPresenter, LocationListener, OnOpenWeatherFinishedListener {
+public class MapsPresenterImpl implements MapsPresenter, OnOpenWeatherFinishedListener {
 
     private MapsFragmentView        view;
     private boolean                 localePermissionCheck;
@@ -37,6 +38,7 @@ public class MapsPresenterImpl implements MapsPresenter, LocationListener, OnOpe
     private UserPreferences         user;
     private OpenWeatherService      openWeatherService;
     private OpenWeatherMap          openWeatherMap;
+    private boolean                 isUserHasDrag;
 
     public MapsPresenterImpl(MapsFragmentView view, Bundle bundle) {
         this.view = view;
@@ -69,9 +71,35 @@ public class MapsPresenterImpl implements MapsPresenter, LocationListener, OnOpe
     }
 
     @Override
+    public void userHasDrag() {
+        this.isUserHasDrag = true;
+    }
+
+    @Override
+    public void uiHasDrag() {
+        this.isUserHasDrag = false;
+    }
+
+    @Override
+    public boolean hasToGetNewLocation() {
+        if(openWeatherMap.isLastSearchByDragInMap() || !isUserHasDrag) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @Override
     public void requestWeathers() {
         this.view.showLoading();
         this.openWeatherService.requestData(this, user);
+    }
+
+    @Override
+    public void requestWeathers(LatLng latLng) {
+        this.view.showLoading();
+        user.setLastDragPlace(new UserLastDraggedLocation(latLng.latitude, latLng.longitude));
+        this.openWeatherService.resquestDataForNewLocation(this, user);
     }
 
     @Override
@@ -98,6 +126,37 @@ public class MapsPresenterImpl implements MapsPresenter, LocationListener, OnOpe
         Location location = LocationServices.FusedLocationApi.getLastLocation(view.getGmapsClient());
 
         if(user != null && user.getPlace()!=null){
+            if(user.getLastDragPlace() != null){
+                location.setLatitude(user.getLastDragPlace().getLat());
+                location.setLongitude(user.getLastDragPlace().getLng());
+            }else{
+                location.setLatitude(user.getPlace().getResult().getGeometry().getLat());
+                location.setLongitude(user.getPlace().getResult().getGeometry().getLng());
+            }
+        }
+
+        view.updateLocation(location);
+
+        if(openWeatherMap == null)
+            requestWeathers();
+        else
+            putPlacesOnMap();
+
+    }
+
+
+    @Override
+    public void getMySavedLocation() {
+
+        if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Request Permission
+            this.checkIfMapsPermissionsIsGranted();
+            return;
+        }
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(view.getGmapsClient());
+
+        if(user != null && user.getPlace()!=null){
             location.setLatitude(user.getPlace().getResult().getGeometry().getLat());
             location.setLongitude(user.getPlace().getResult().getGeometry().getLng());
         }
@@ -114,24 +173,29 @@ public class MapsPresenterImpl implements MapsPresenter, LocationListener, OnOpe
     @Override
     public void putPlacesOnMap() {
         for (OpenWeatherMapResult result : openWeatherMap.getList()){
-            this.view.drawMarker(new LatLng(result.getCoord().getLat(), result.getCoord().getLon()));
+            this.view.drawMarker(result);
         }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        view.updateLocation(location);
+        this.openWeatherMap.setLastSearchByDragInMap(false);
     }
 
     @Override
     public void onApiError(ApiResponseType error) {
-
+        this.view.hideLoading();
     }
 
     @Override
     public void onSuccess(OpenWeatherMap openWeatherMap) {
         this.openWeatherMap = openWeatherMap;
         this.putPlacesOnMap();
+        this.view.hideLoading();
+    }
+
+    @Override
+    public void onSuccessNewPlaces(OpenWeatherMap openWeatherMap) {
+        this.openWeatherMap = openWeatherMap;
+        this.view.clearAllMarkers();
+        this.putPlacesOnMap();
+        this.view.updateMainView(openWeatherMap, this.user);
         this.view.hideLoading();
     }
 }

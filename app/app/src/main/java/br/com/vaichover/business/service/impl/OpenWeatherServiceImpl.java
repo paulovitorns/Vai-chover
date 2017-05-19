@@ -70,4 +70,47 @@ public class OpenWeatherServiceImpl implements OpenWeatherService {
         });
 
     }
+
+    @Override
+    public void resquestDataForNewLocation(final OnOpenWeatherFinishedListener listener, UserPreferences user) {
+
+        String appId = VaiChoverApp.getContext().getString(R.string.apiKey);
+
+        Call<OpenWeatherMapResponseVO> call = Api.getAdapter().requestWeather(
+                user.getLastDragPlace().getLat(),
+                user.getLastDragPlace().getLng(),
+                user.getRadius(),
+                user.getDegrees().getUnits(),
+                user.getLang(),
+                appId
+        );
+
+        call.enqueue(new Callback<OpenWeatherMapResponseVO>() {
+            @Override
+            public void onResponse(Response<OpenWeatherMapResponseVO> response, Retrofit retrofit) {
+                if(response.isSuccess()){
+                    if(response.body().list.size() > 0)
+                        listener.onSuccessNewPlaces(new OpenWeatherMap(response.body()));
+                    else
+                        listener.onApiError(ApiResponseType.EMPTY_STATE);
+                }else{
+                    Log.e("Characters Error","Response Error 4xx/5xx");
+                    apiErrorService.processErrorResponse(response, listener);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("LOGIN_ERROR","Characters Request");
+                Log.e("LOGIN_ERROR","Characters Request "+t.getMessage());
+                Log.e("LOGIN_ERROR","Characters Request "+t.getCause());
+                Log.e("LOGIN_ERROR","Characters Request "+t.getStackTrace());
+                if(!Utils.isNetworkAvailable()){
+                    listener.onApiError(ApiResponseType.NO_INTENET_CONNECTION);
+                }else{
+                    listener.onApiError(ApiResponseType.SERVER_TIMEOUT);
+                }
+            }
+        });
+    }
 }

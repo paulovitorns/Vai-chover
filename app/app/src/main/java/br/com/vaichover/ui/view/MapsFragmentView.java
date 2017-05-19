@@ -4,7 +4,10 @@ import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.model.LatLng;
+
+import br.com.vaichover.model.OpenWeatherMap;
+import br.com.vaichover.model.OpenWeatherMapResult;
+import br.com.vaichover.model.UserPreferences;
 
 /**
  * © Copyright 2016 Skatavel.
@@ -20,14 +23,16 @@ public interface MapsFragmentView extends BaseFragmentView {
 
     void drawMarker();
 
-    void drawMarker(LatLng latLng);
+    void drawMarker(OpenWeatherMapResult result);
 
-    void drawMarkerWithAnimation();
+    void clearAllMarkers();
 
     void updateLocation(Location location);
 
     Context getContext();
 
     GoogleApiClient getGmapsClient();
+
+    void updateMainView(OpenWeatherMap map, UserPreferences user);
 
 }

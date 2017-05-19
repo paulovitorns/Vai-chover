@@ -20,6 +20,7 @@ public class OpenWeatherMap implements Serializable {
     private int                         cod;
     private int                         count;
     private List<OpenWeatherMapResult>  list;
+    private boolean                     isLastSearchByDragInMap;
 
     public OpenWeatherMap(OpenWeatherMapResponseVO responseVO) {
         this.message    = responseVO.message;
@@ -50,5 +51,13 @@ public class OpenWeatherMap implements Serializable {
 
     public List<OpenWeatherMapResult> getList() {
         return list;
+    }
+
+    public boolean isLastSearchByDragInMap() {
+        return isLastSearchByDragInMap;
+    }
+
+    public void setLastSearchByDragInMap(boolean lastSearchByDragInMap) {
+        isLastSearchByDragInMap = lastSearchByDragInMap;
     }
 }

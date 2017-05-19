@@ -30,4 +30,6 @@ public interface DashBoardView extends BaseView {
     void requestLocationPermission();
 
     void updateWeathers(OpenWeatherMap map);
+
+    void updateWeathersForNewLocation(OpenWeatherMap map, UserPreferences user);
 }
