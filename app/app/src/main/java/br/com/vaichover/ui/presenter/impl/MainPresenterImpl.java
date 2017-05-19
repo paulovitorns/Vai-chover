@@ -126,6 +126,8 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
     @Override
     public void prepareDefaultFragment() {
 
+        this.openWeatherMap.setLastSearchByDragInMap(true);
+
         WeatherListFragment fragment = WeatherListFragment.newInstance();
         Bundle bundle = new Bundle();
         bundle.putSerializable(UserPreferences.KEY, user);
@@ -138,6 +140,8 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
     @Override
     public void prepareFragment() {
 
+        this.openWeatherMap.setLastSearchByDragInMap(true);
+
         MapsFragment fragment = MapsFragment.newInstance();
         Bundle bundle = new Bundle();
         bundle.putSerializable(UserPreferences.KEY, user);
@@ -145,6 +149,12 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
         fragment.setArguments(bundle);
 
         this.view.changeFragment(fragment);
+    }
+
+    @Override
+    public void updateWeathersAndUserData(OpenWeatherMap map, UserPreferences user) {
+        this.openWeatherMap = map;
+        this.user           = user;
     }
 
     @Override
@@ -160,4 +170,7 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
         prepareDefaultFragment();
         this.view.hideLoading();
     }
+
+    @Override
+    public void onSuccessNewPlaces(OpenWeatherMap openWeatherMap) {}
 }

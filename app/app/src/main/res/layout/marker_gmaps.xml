@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_default"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/txPlaceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="@string/default_var"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="@dimen/font_title"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/weatherIcon"
+            android:layout_width="@dimen/img_weather_list_size"
+            android:layout_height="@dimen/img_weather_list_size"
+            tools:src="@drawable/ic_app"/>
+
+        <TextView
+            android:id="@+id/txTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:gravity="right"
+            android:text="@string/temp"
+            android:textColor="@color/grey"
+            android:textStyle="normal"
+            android:textSize="@dimen/font_large"/>
+
+    </LinearLayout>
+
+</LinearLayout>

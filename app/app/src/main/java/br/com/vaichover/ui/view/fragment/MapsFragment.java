@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +31,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import br.com.vaichover.R;
+import br.com.vaichover.model.OpenWeatherMap;
+import br.com.vaichover.model.OpenWeatherMapResult;
+import br.com.vaichover.model.UserPreferences;
 import br.com.vaichover.ui.presenter.MapsPresenter;
 import br.com.vaichover.ui.presenter.impl.MapsPresenterImpl;
 import br.com.vaichover.ui.view.DashBoardView;
@@ -43,7 +47,12 @@ import butterknife.OnClick;
  * Autor : Paulo Sales - paulovitorns@gmail.com
  */
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, MapsFragmentView {
+public class MapsFragment extends Fragment implements MapsFragmentView,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraMoveStartedListener,
+        GoogleMap.OnCameraIdleListener{
 
     private View            view;
     private GoogleApiClient mGoogleApiClient;
@@ -130,7 +139,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         this.gMap = googleMap;
+        this.gMap.setOnCameraMoveStartedListener(this);
+        this.gMap.setOnCameraIdleListener(this);
 
         try {
             // Customise the styling of the base map using a JSON object defined
@@ -150,7 +162,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @OnClick(R.id.fabGoToLocation)
     @Override
     public void onClickFabLocale() {
-        presenter.getMyLocation();
+        presenter.getMySavedLocation();
+        presenter.userHasDrag();
     }
 
     @Override
@@ -176,13 +189,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
-    public void drawMarker(LatLng latLng) {
+    public void drawMarker(OpenWeatherMapResult result) {
+
+        String temp = getString(R.string.temp);
+        temp = temp.replace("...", String.valueOf(Math.round(result.getMain().getTemp())));
+
         MarkerOptions opt = new MarkerOptions();
-        opt.position(latLng);
-        opt.title("teste role");
+
+        opt.position(new LatLng(result.getCoord().getLat(), result.getCoord().getLon()));
+        opt.title(result.getName());
+        opt.snippet(temp);
         opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
         //add the marker and
         gMap.addMarker(opt);
+    }
+
+    @Override
+    public void clearAllMarkers() {
+        gMap.clear();
     }
 
     @Override
@@ -226,6 +250,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
+    public void updateMainView(OpenWeatherMap map, UserPreferences user) {
+        ((DashBoardView)getActivity()).updateWeathersForNewLocation(map, user);
+    }
+
+    @Override
     public void showLoading() {
         ((DashBoardView)getActivity()).showLoading();
     }
@@ -258,5 +287,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             }
 
         }
+    }
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if(i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+            presenter.userHasDrag();
+        }
+    }
+
+    @Override
+    public void onCameraIdle() {
+        if(presenter.hasToGetNewLocation())
+            presenter.requestWeathers(gMap.getCameraPosition().target);
     }
 }

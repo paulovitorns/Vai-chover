@@ -1,5 +1,7 @@
 package br.com.vaichover.business.service;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import br.com.vaichover.common.OnOpenWeatherFinishedListener;
 import br.com.vaichover.model.UserPreferences;
 
@@ -9,5 +11,8 @@ import br.com.vaichover.model.UserPreferences;
  */
 
 public interface OpenWeatherService {
+
     void requestData(OnOpenWeatherFinishedListener listener, UserPreferences user);
+
+    void resquestDataForNewLocation(OnOpenWeatherFinishedListener listener, UserPreferences user);
 }

@@ -53,7 +53,6 @@
                     android:layout_width="@dimen/img_weather_list_size"
                     android:layout_height="@dimen/img_weather_list_size"
                     android:layout_marginRight="@dimen/margin_small"
-                    android:transitionName="character"
                     tools:src="@drawable/ic_app"/>
 
                 <TextView

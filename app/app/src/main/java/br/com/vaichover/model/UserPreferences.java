@@ -12,10 +12,11 @@ public class UserPreferences implements Serializable {
 
     public static final String KEY = UserPreferences.class.getSimpleName();
 
-    private Degrees degrees;
-    private int     radius;
-    private String  lang = Locale.getDefault().getLanguage();
-    private GPlace  place;
+    private Degrees                 degrees;
+    private int                     radius;
+    private String                  lang = Locale.getDefault().getLanguage();
+    private GPlace                  place;
+    private UserLastDraggedLocation lastDragPlace;
 
     public UserPreferences(){
         this.degrees    = Degrees.CELSIUS;
@@ -49,6 +50,14 @@ public class UserPreferences implements Serializable {
 
     public void setPlace(GPlace place) {
         this.place = place;
+    }
+
+    public UserLastDraggedLocation getLastDragPlace() {
+        return lastDragPlace;
+    }
+
+    public void setLastDragPlace(UserLastDraggedLocation lastDragPlace) {
+        this.lastDragPlace = lastDragPlace;
     }
 
     public enum Degrees{

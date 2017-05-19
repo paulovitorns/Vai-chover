@@ -227,6 +227,11 @@ public class MainActivity extends BaseActivity implements DashBoardView {
     }
 
     @Override
+    public void updateWeathersForNewLocation(OpenWeatherMap map, UserPreferences user) {
+        this.presenter.updateWeathersAndUserData(map, user);
+    }
+
+    @Override
     public void showEptyState(ApiResponseType error) {
         frameLayout.setVisibility(View.GONE);
         super.showEptyState(error);
