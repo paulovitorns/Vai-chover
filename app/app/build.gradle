@@ -3,6 +3,8 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 
+apply from: "../artifacts.gradle"
+
 def versionMajor = 1
 def versionMinor = 0
 def versionPatch = 0
@@ -22,6 +24,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
