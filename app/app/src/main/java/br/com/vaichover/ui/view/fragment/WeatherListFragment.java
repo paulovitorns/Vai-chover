@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import br.com.vaichover.R;
 import br.com.vaichover.model.OpenWeatherMap;
 import br.com.vaichover.ui.adapter.WeatherAdapter;
+import br.com.vaichover.ui.presenter.WeatherListPresenter;
+import br.com.vaichover.ui.presenter.impl.WeatherListPresenterImpl;
 import br.com.vaichover.ui.view.WeatherListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +28,7 @@ public class WeatherListFragment extends Fragment implements WeatherListView {
     @Bind(R.id.recyclerView) RecyclerView recyclerView;
 
     private View view;
+    private WeatherListPresenter presenter;
 
     public WeatherListFragment() {
     }
@@ -42,9 +45,7 @@ public class WeatherListFragment extends Fragment implements WeatherListView {
 
         ButterKnife.bind(this, view);
 
-        OpenWeatherMap map = (OpenWeatherMap) getArguments().getSerializable(OpenWeatherMap.KEY);
-        loadAdapter();
-        setAdapter(new WeatherAdapter(map, getContext()));
+        presenter = new WeatherListPresenterImpl(this, getArguments());
 
         return view;
     }
