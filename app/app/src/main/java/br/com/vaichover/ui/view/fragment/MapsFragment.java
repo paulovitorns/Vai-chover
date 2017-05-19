@@ -1,11 +1,9 @@
 package br.com.vaichover.ui.view.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -51,7 +49,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap       gMap;
     private Location        myLocation;
-    private LocationManager locationManager;
     private MapsPresenter   presenter;
     private Marker          marker;
 
@@ -84,11 +81,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                     .build();
         }
 
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-
         ButterKnife.bind(this, view);
 
-        presenter = new MapsPresenterImpl(this);
+        presenter = new MapsPresenterImpl(this, getArguments());
 
         return view;
     }
@@ -98,7 +93,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         super.onResume();
 
         if(!Utils.isNetworkAvailable()){
-
         }else{
             onStart();
         }
@@ -120,13 +114,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
-        myLocation = requestMyLocation();
-
-        if (myLocation != null) {
-            drawMarker();
-        }
-
+        presenter.getMyLocation();
     }
 
     @Override
@@ -162,8 +150,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @OnClick(R.id.fabGoToLocation)
     @Override
     public void onClickFabLocale() {
-        myLocation = requestMyLocation();
-        drawMarkerWithAnimation();
+        presenter.getMyLocation();
     }
 
     @Override
@@ -174,34 +161,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
-    public Location requestMyLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return null;
-        }
-        return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
-
-    @Override
     public void drawMarker() {
 
         if(marker != null){
             marker.remove();
         }
 
-        LatLng onlyMarker;
+        CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(
+                new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
+                ZOOM_MAPS);
 
-        onlyMarker = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-        MarkerOptions opt = new MarkerOptions();
-
-        opt.position(onlyMarker);
-        opt.title("minha localização");
-        opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-
-        //add the marker and
-        marker = gMap.addMarker(opt);
-
-        CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(onlyMarker, ZOOM_MAPS);
         gMap.moveCamera(updateCam);
 
     }
@@ -247,10 +216,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         if(myLocation != null){
 
-            if(marker !=null) {
-                marker.remove();
-                drawMarker();
-            }
+            drawMarker();
         }
     }
 
@@ -280,11 +246,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                         || (grantResults[1] == PackageManager.PERMISSION_GRANTED))) {
 
                     if(firstLoad){
-                        myLocation = requestMyLocation();
-                        drawMarker();
+                        presenter.getMyLocation();
                     }
                     firstLoad = false;
-                    presenter.getLocationAfterPermissionGranted();
+                    presenter.getMyLocation();
 
                 } else {
 

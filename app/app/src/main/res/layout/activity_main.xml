@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="br.com.vaichover.ui.view.activity.MainActivity">
 
     <include layout="@layout/toolbar_app"/>
 
     <include layout="@layout/content_main" />
+
+    <include layout="@layout/view_api_response_errors"/>
 
 </android.support.design.widget.CoordinatorLayout>

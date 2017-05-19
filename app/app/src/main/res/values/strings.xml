@@ -17,6 +17,7 @@
     <string name="btn_retry">tente novamente</string>
     <string name="btn_conection">conectar a internet</string>
     <string name="btn_search">nova busca</string>
+    <string name="permission_denied">Olá, precisamos da sua localização.\nAssim conseguiremos informar as condições climáticas próximo a você.</string>
     <string name="empty_state">Não encontramos nenhuma localização com a sua busca!</string>
     <string name="server_timeout">O servidor não esta respondendo!</string>
     <string name="server_error">Ocorreu com nosso servidor!</string>
@@ -36,16 +37,25 @@
     <string name="hint_name">Nome</string>
     <string name="hint_location">Sua localização padrão</string>
     <string name="hint_range">Escolha o raio de busca</string>
-    <string name="hint_range_initial">5 km</string>
+    <string name="hint_range_initial">10 km</string>
     <string name="hint_range_final">50 km</string>
-    <string name="hint_celsius">toque para visualizar\nos graus em\ncelsius</string>
-    <string name="hint_fahrenheit">toque para visualizar\nos graus em\nfahrenheit</string>
+    <string name="hint_celsius">graus em\ncelsius</string>
+    <string name="hint_fahrenheit">graus em\nfahrenheit</string>
+    <string name="hitn_suggestions">sugestões</string>
 
     <!--Common Text-->
     <string name="btn_save">salvar</string>
+    <string name="btn_get_locale">selecionar sua localização atual</string>
 
     <!--validate msg errors-->
     <string name="error_empty_name">digite seu nome</string>
     <string name="error_empty_locale">digite a sua localização padrão</string>
 
+    <!--weather cardview text-->
+    <string name="temp">...º</string>
+    <string name="min_temp">min ...º</string>
+    <string name="max_temp">máx ...º</string>
+
+    <string name="dialog_preferences_title">Olá!</string>
+    <string name="dialog_preferences_description">Seus dados foram salvos com sucesso.</string>
 </resources>

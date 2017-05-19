@@ -8,22 +8,23 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <include layout="@layout/toolbar_app"/>
+    <include layout="@layout/preferences_toolbar_app"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/margin_default"
-        android:paddingRight="@dimen/margin_default">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingLeft="@dimen/margin_default"
+            android:paddingRight="@dimen/margin_default"
             android:paddingTop="@dimen/margin_default"
             android:weightSum="4">
 
             <LinearLayout
+                android:id="@+id/containerButtons"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -32,31 +33,33 @@
                     android:id="@+id/containerCelsius"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/contianerCheckCelsius"
+                        android:id="@+id/containerCheckCelsius"
                         android:orientation="vertical"
                         android:layout_width="@dimen/container_degrees_width"
                         android:layout_height="@dimen/container_degrees_height"
                         android:layout_margin="@dimen/margin_small"
                         android:padding="@dimen/margin_default"
+                        android:layout_centerHorizontal="true"
                         android:background="@drawable/view_checked_type"
                         android:clickable="true"
                         android:gravity="center"
                         android:weightSum="2">
 
                         <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/ic_prefs_celsius"
+                            android:id="@+id/iconCelsius"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_celsius"
                             android:tint="@color/white"/>
 
                         <TextView
+                            android:id="@+id/txCelsius"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_default"
+                            android:layout_marginTop="@dimen/margin_small"
                             android:text="@string/hint_celsius"
                             android:textAlignment="center"
                             android:textColor="@color/white"
@@ -66,7 +69,7 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/imgCheckCelsiu"
+                        android:id="@+id/imgCheckCelsius"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_default"
@@ -80,15 +83,15 @@
                     android:id="@+id/containerFahrenheit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/contianerCheckFahrenheit"
+                        android:id="@+id/containerCheckFahrenheit"
                         android:orientation="vertical"
                         android:layout_width="@dimen/container_degrees_width"
                         android:layout_height="@dimen/container_degrees_height"
                         android:layout_margin="@dimen/margin_small"
+                        android:layout_centerHorizontal="true"
                         android:padding="@dimen/margin_default"
                         android:background="@drawable/view_check_type"
                         android:clickable="true"
@@ -96,15 +99,17 @@
                         android:weightSum="2">
 
                         <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/ic_prefs_fahrenheit"
+                            android:id="@+id/iconFahrenheit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_fahrenheit"
                             android:tint="@color/colorPrimaryDark"/>
 
                         <TextView
+                            android:id="@+id/txFahrenheit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_default"
+                            android:layout_marginTop="@dimen/margin_small"
                             android:text="@string/hint_fahrenheit"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
@@ -144,12 +149,13 @@
                         android:layout_centerHorizontal="true"
                         android:textColorHint="@color/white">
 
-                        <AutoCompleteTextView
+                        <EditText
                             android:id="@+id/edtLocation"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edt_common_size"
+                            android:paddingRight="@dimen/margin_default"
                             android:background="@drawable/view_edittext_background"
-                            android:inputType="textCapWords"
+                            android:inputType="textCapSentences"
                             android:hint="@string/hint_location"
                             android:textSize="@dimen/font_normal"
                             android:textStyle="bold"
@@ -158,7 +164,74 @@
 
                     </android.support.design.widget.TextInputLayout>
 
+                    <ProgressBar
+                        android:id="@+id/edtLoadingIndicator"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/iconClear"
+                        android:layout_width="@dimen/button_small_size"
+                        android:layout_height="@dimen/button_small_size"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_close_white_24dp"/>
+
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/containerSugests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:text="@string/hitn_suggestions"
+                        android:textSize="@dimen/font_normal"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <TextView
+                        android:id="@+id/txErrorPlaces"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:text="@string/default_var"
+                        android:visibility="gone"
+                        android:textSize="@dimen/font_title"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <Button
+                        android:id="@+id/btnGetLatLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_size"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:visibility="gone"
+                        android:background="@android:color/transparent"
+                        android:text="@string/btn_get_locale"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -176,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default_extra"
                     app:corner_radius="10"
-                    app:min_value="5"
+                    app:min_value="10"
                     app:max_value="50"
                     app:bar_color="@color/white"
                     app:bar_highlight_color="@color/colorPrimary"

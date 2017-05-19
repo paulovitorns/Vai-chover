@@ -8,9 +8,11 @@ package br.com.vaichover.ui.presenter;
 
 public interface MapsPresenter extends BasePresenter {
 
+    void requestWeathers();
+
     void checkIfMapsPermissionsIsGranted();
 
-    void getLocationAfterPermissionGranted();
-
     void getMyLocation();
+
+    void putPlacesOnMap();
 }

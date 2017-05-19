@@ -1,6 +1,7 @@
 package br.com.vaichover.ui.presenter;
 
 
+import br.com.vaichover.model.GPlacesAutoComplete;
 import br.com.vaichover.model.UserPreferences;
 
 /**
@@ -17,5 +18,11 @@ public interface PreferencesPresenter extends BasePresenter {
     void updateImagemUser(UserPreferences user);
 
     boolean validateRegisterData();
+
+    void requestPlaces(String param);
+
+    void setPlaceSelected(GPlacesAutoComplete place);
+
+    void setLastUserLocation();
 
 }

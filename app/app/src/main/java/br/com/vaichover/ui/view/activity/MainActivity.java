@@ -1,20 +1,33 @@
 package br.com.vaichover.ui.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import br.com.vaichover.R;
+import br.com.vaichover.model.ApiResponseType;
+import br.com.vaichover.model.OpenWeatherMap;
 import br.com.vaichover.model.UserPreferences;
 import br.com.vaichover.ui.presenter.MainPresenter;
 import br.com.vaichover.ui.presenter.impl.MainPresenterImpl;
 import br.com.vaichover.ui.view.DashBoardView;
 import br.com.vaichover.ui.view.fragment.MapsFragment;
+import br.com.vaichover.util.Utils;
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * © Copyright 2017.
@@ -23,10 +36,16 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements DashBoardView {
 
-    private boolean confirmedExit = false;
-    private Menu    menu;
-    private UserPreferences user;
-    private MainPresenter presenter;
+
+    @Bind(R.id.frameLayout) FrameLayout frameLayout;
+
+    private boolean             confirmedExit = false;
+    private Menu                menu;
+    private UserPreferences     user;
+    private MainPresenter       presenter;
+    private boolean             isFullLoaded;
+    private static final int    LOCATION_REQUEST_CODE  = 200;
+    private OpenWeatherMap      map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +56,42 @@ public class MainActivity extends BaseActivity implements DashBoardView {
 
         setupNavigateActionBarHome(R.string.window_dash);
 
-        this.presenter = new MainPresenterImpl(this);
+        if(savedInstanceState != null){
+            user    = (UserPreferences) savedInstanceState.getSerializable(UserPreferences.KEY);
+            map     = (OpenWeatherMap) savedInstanceState.getSerializable(OpenWeatherMap.KEY);
+        }
 
+        this.presenter = new MainPresenterImpl(this, user, map);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putSerializable(OpenWeatherMap.KEY, map);
+        outState.putSerializable(UserPreferences.KEY, user);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Utils.isNetworkAvailable()){
+            if (isFullLoaded && presenter.hasLocationPermission()) {
+                emptyStateContainer.setVisibility(View.GONE);
+                frameLayout.setVisibility(View.VISIBLE);
+                this.presenter.tryAgain();
+            }
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        if(this.user == null && presenter.hasLocationPermission())
+            this.presenter.updateToolbar();
+
+        isFullLoaded = true;
+
+        super.onWindowFocusChanged(hasFocus);
     }
 
     @Override
@@ -47,7 +100,7 @@ public class MainActivity extends BaseActivity implements DashBoardView {
             finish();
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_exit_alert), Toast.LENGTH_SHORT).show();
-            loadDefaultFragment();
+            this.presenter.prepareDefaultFragment();
             confirmedExit = true;
         }
     }
@@ -71,6 +124,7 @@ public class MainActivity extends BaseActivity implements DashBoardView {
             item.setVisible(false);
             MenuItem mapsMenu = menu.findItem(R.id.action_gmaps);
             mapsMenu.setVisible(true);
+            onTapDashList();
             return true;
         }
 
@@ -78,11 +132,14 @@ public class MainActivity extends BaseActivity implements DashBoardView {
             item.setVisible(false);
             MenuItem listMenu = menu.findItem(R.id.action_list);
             listMenu.setVisible(true);
+            onTapDashMap();
             return true;
         }
 
         if(id == R.id.action_scale){
-            startActivity(new Intent(this, PreferencesActivity.class));
+            Intent intent = new Intent(this, PreferencesActivity.class);
+            intent.putExtra(UserPreferences.KEY, user);
+            startActivity(intent);
             overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
             return true;
         }
@@ -91,11 +148,25 @@ public class MainActivity extends BaseActivity implements DashBoardView {
     }
 
     @Override
-    public void loadDefaultFragment() {
+    public void showDegreesPreferencesIcon(UserPreferences user) {
+        this.user           = user;
+
+        if(this.map == null)
+            this.presenter.getWeathers();
+
+        if(this.user.getDegrees() == UserPreferences.Degrees.CELSIUS)
+            showCelsiusIcon();
+        else
+            showFahrenheitIcon();
+
+    }
+
+    @Override
+    public void loadDefaultFragment(Fragment fragment) {
+
+        frameLayout.setVisibility(View.VISIBLE);
 
         confirmedExit = true;
-
-        MapsFragment fragment = MapsFragment.newInstance();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
@@ -104,6 +175,9 @@ public class MainActivity extends BaseActivity implements DashBoardView {
 
     @Override
     public void changeFragment(Fragment fragment) {
+
+        frameLayout.setVisibility(View.VISIBLE);
+
         if(confirmedExit)
             confirmedExit = false;
 
@@ -113,13 +187,78 @@ public class MainActivity extends BaseActivity implements DashBoardView {
     }
 
     @Override
-    public void onTapDashMap() {
+    public void showCelsiusIcon() {
+        MenuItem mapsScale = menu.findItem(R.id.action_scale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mapsScale.setIcon(getDrawable(R.drawable.ic_celsius));
+        else
+            mapsScale.setIcon(getResources().getDrawable(R.drawable.ic_celsius));
+    }
 
+    @Override
+    public void showFahrenheitIcon() {
+        MenuItem mapsScale = menu.findItem(R.id.action_scale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mapsScale.setIcon(getDrawable(R.drawable.ic_fahrenheit));
+        else
+            mapsScale.setIcon(getResources().getDrawable(R.drawable.ic_fahrenheit));
+    }
+
+    @Override
+    public void onTapDashMap() {
+        this.presenter.prepareFragment();
     }
 
     @Override
     public void onTapDashList() {
-
+        this.presenter.prepareDefaultFragment();
     }
+
+    @Override
+    public void requestLocationPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                LOCATION_REQUEST_CODE);
+    }
+
+    @Override
+    public void updateWeathers(OpenWeatherMap map) {
+        this.map = map;
+    }
+
+    @Override
+    public void showEptyState(ApiResponseType error) {
+        frameLayout.setVisibility(View.GONE);
+        super.showEptyState(error);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_REQUEST_CODE: {
+
+                if ( grantResults.length > 0
+                        && ((grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                        || (grantResults[1] == PackageManager.PERMISSION_GRANTED))) {
+
+                    presenter.onGetUserLocation();
+                }else{
+                    showEptyState(ApiResponseType.PERMISSION_DENIED);
+                }
+
+                return;
+            }
+
+        }
+    }
+
+    @OnClick(R.id.btnReTry)
+    public void onTapRetry(){
+        if (presenter.hasLocationPermission())
+            presenter.tryAgain();
+        else
+            requestLocationPermission();
+    }
+
 
 }

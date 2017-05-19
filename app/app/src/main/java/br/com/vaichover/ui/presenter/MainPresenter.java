@@ -6,5 +6,18 @@ package br.com.vaichover.ui.presenter;
  */
 
 public interface MainPresenter extends BasePresenter {
-    void getUserInfor();
+
+    boolean hasLocationPermission();
+
+    void onGetUserLocation();
+
+    void startUserPreferences();
+
+    void updateToolbar();
+
+    void getWeathers();
+
+    void prepareDefaultFragment();
+
+    void prepareFragment();
 }

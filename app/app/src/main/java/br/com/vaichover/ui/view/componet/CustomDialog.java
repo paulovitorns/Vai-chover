@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.com.vaichover.R;
+import br.com.vaichover.ui.view.PreferencesView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -27,11 +28,13 @@ public class CustomDialog implements View.OnClickListener{
     private Context         context;
     private String          title;
     private String          msg;
+    private PreferencesView view;
 
-    public CustomDialog(Context context, String title, String msg){
+    public CustomDialog(Context context, String title, String msg, PreferencesView view){
         this.context    = context;
         this.title      = title;
         this.msg        = msg;
+        this.view       = view;
 
         this.create();
     }
@@ -60,5 +63,6 @@ public class CustomDialog implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         dialog.cancel();
+        view.navigateToDash();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.vaichover.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * © Copyright 2017.
@@ -11,25 +12,23 @@ public class UserPreferences implements Serializable {
 
     public static final String KEY = UserPreferences.class.getSimpleName();
 
-    private String  name;
+    private Degrees degrees;
     private int     radius;
-    private String  address;
-    private String  neighborhood;
-    private String  city;
-    private String  state;
-    private String  country;
-    private double  lat;
-    private double  lng;
-    private String  imgNameResource;
+    private String  lang = Locale.getDefault().getLanguage();
+    private GPlace  place;
 
-    public UserPreferences() {}
-
-    public String getName() {
-        return name;
+    public UserPreferences(){
+        this.degrees    = Degrees.CELSIUS;
+        this.radius     = 10;
+        this.place      = new GPlace();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Degrees getDegrees() {
+        return degrees;
+    }
+
+    public void setDegrees(Degrees degrees) {
+        this.degrees = degrees;
     }
 
     public int getRadius() {
@@ -40,68 +39,31 @@ public class UserPreferences implements Serializable {
         this.radius = radius;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLang() {
+        return lang;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public GPlace getPlace() {
+        return place;
     }
 
-    public String getNeighborhood() {
-        return neighborhood;
+    public void setPlace(GPlace place) {
+        this.place = place;
     }
 
-    public void setNeighborhood(String neighborhood) {
-        this.neighborhood = neighborhood;
-    }
+    public enum Degrees{
+        CELSIUS("metric"),
+        FAHRENHEIT("imperial");
 
-    public String getCity() {
-        return city;
-    }
+        String units;
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+        Degrees(String units) {
+            this.units = units;
+        }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public String getImgNameResource() {
-        return imgNameResource;
-    }
-
-    public void setImgNameResource(String imgNameResource) {
-        this.imgNameResource = imgNameResource;
+        public String getUnits() {
+            return units;
+        }
     }
 
 }

@@ -18,8 +18,6 @@ public interface MapsFragmentView extends BaseFragmentView {
 
     void requestLocationPermission();
 
-    Location requestMyLocation();
-
     void drawMarker();
 
     void drawMarker(LatLng latLng);

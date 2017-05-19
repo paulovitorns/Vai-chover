@@ -2,6 +2,7 @@ package br.com.vaichover.ui.view;
 
 import android.support.v4.app.Fragment;
 
+import br.com.vaichover.model.OpenWeatherMap;
 import br.com.vaichover.model.UserPreferences;
 
 /**
@@ -12,12 +13,21 @@ import br.com.vaichover.model.UserPreferences;
 
 public interface DashBoardView extends BaseView {
 
-    void loadDefaultFragment();
+    void showDegreesPreferencesIcon(UserPreferences user);
+
+    void loadDefaultFragment(Fragment fragment);
 
     void changeFragment(Fragment fragment);
+
+    void showCelsiusIcon();
+
+    void showFahrenheitIcon();
 
     void onTapDashMap();
 
     void onTapDashList();
 
+    void requestLocationPermission();
+
+    void updateWeathers(OpenWeatherMap map);
 }
