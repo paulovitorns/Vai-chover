@@ -76,6 +76,11 @@ public class MapsPresenterImpl implements MapsPresenter, OnOpenWeatherFinishedLi
     }
 
     @Override
+    public void uiHasDrag() {
+        this.isUserHasDrag = false;
+    }
+
+    @Override
     public boolean hasToGetNewLocation() {
         if(openWeatherMap.isLastSearchByDragInMap() || !isUserHasDrag) {
             return false;

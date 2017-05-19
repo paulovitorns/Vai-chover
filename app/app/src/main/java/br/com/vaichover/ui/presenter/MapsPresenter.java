@@ -12,6 +12,8 @@ public interface MapsPresenter extends BasePresenter {
 
     void userHasDrag();
 
+    void uiHasDrag();
+
     boolean hasToGetNewLocation();
 
     void requestWeathers();

@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/weather_info_window_width"
+    android:minWidth="@dimen/weather_info_window_width"
+    android:layout_height="wrap_content"
     android:padding="@dimen/margin_default"
     android:gravity="center_horizontal">
 
@@ -17,8 +18,7 @@
         android:textStyle="bold"
         android:textSize="@dimen/font_title"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -28,19 +28,21 @@
             android:id="@+id/weatherIcon"
             android:layout_width="@dimen/img_weather_list_size"
             android:layout_height="@dimen/img_weather_list_size"
-            tools:src="@drawable/ic_app"/>
+            android:layout_alignParentLeft="true"
+            tools:src="@drawable/ic_app"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:id="@+id/txTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_alignParentRight="true"
             android:gravity="right"
             android:text="@string/temp"
             android:textColor="@color/grey"
             android:textStyle="normal"
             android:textSize="@dimen/font_large"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

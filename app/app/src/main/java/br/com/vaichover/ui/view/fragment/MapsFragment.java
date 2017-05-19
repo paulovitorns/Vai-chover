@@ -7,14 +7,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,6 +32,7 @@ import br.com.vaichover.R;
 import br.com.vaichover.model.OpenWeatherMap;
 import br.com.vaichover.model.OpenWeatherMapResult;
 import br.com.vaichover.model.UserPreferences;
+import br.com.vaichover.ui.adapter.WeatherInfoAdapter;
 import br.com.vaichover.ui.presenter.MapsPresenter;
 import br.com.vaichover.ui.presenter.impl.MapsPresenterImpl;
 import br.com.vaichover.ui.view.DashBoardView;
@@ -52,14 +51,17 @@ public class MapsFragment extends Fragment implements MapsFragmentView,
         GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback,
         GoogleMap.OnCameraMoveStartedListener,
-        GoogleMap.OnCameraIdleListener{
+        GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnInfoWindowLongClickListener,
+        GoogleMap.OnInfoWindowCloseListener{
 
     private View            view;
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap       gMap;
     private Location        myLocation;
     private MapsPresenter   presenter;
-    private Marker          marker;
 
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 200;
     private static final int ZOOM_MAPS = 10;
@@ -141,8 +143,17 @@ public class MapsFragment extends Fragment implements MapsFragmentView,
     public void onMapReady(GoogleMap googleMap) {
 
         this.gMap = googleMap;
+
+        // Hide the zoom controls as the button panel will cover it.
+        this.gMap.getUiSettings().setZoomControlsEnabled(false);
+
         this.gMap.setOnCameraMoveStartedListener(this);
         this.gMap.setOnCameraIdleListener(this);
+        this.gMap.setInfoWindowAdapter(new WeatherInfoAdapter(getActivity()));
+        this.gMap.setOnMarkerClickListener(this);
+        this.gMap.setOnInfoWindowClickListener(this);
+        this.gMap.setOnInfoWindowCloseListener(this);
+        this.gMap.setOnInfoWindowLongClickListener(this);
 
         try {
             // Customise the styling of the base map using a JSON object defined
@@ -176,10 +187,6 @@ public class MapsFragment extends Fragment implements MapsFragmentView,
     @Override
     public void drawMarker() {
 
-        if(marker != null){
-            marker.remove();
-        }
-
         CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(
                 new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                 ZOOM_MAPS);
@@ -194,43 +201,17 @@ public class MapsFragment extends Fragment implements MapsFragmentView,
         String temp = getString(R.string.temp);
         temp = temp.replace("...", String.valueOf(Math.round(result.getMain().getTemp())));
 
-        MarkerOptions opt = new MarkerOptions();
-
-        opt.position(new LatLng(result.getCoord().getLat(), result.getCoord().getLon()));
-        opt.title(result.getName());
-        opt.snippet(temp);
-        opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-        //add the marker and
-        gMap.addMarker(opt);
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(result.getCoord().getLat(), result.getCoord().getLon()))
+                .title(result.getName())
+                .snippet(temp)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp))
+        ).setTag(result);
     }
 
     @Override
     public void clearAllMarkers() {
         gMap.clear();
-    }
-
-    @Override
-    public void drawMarkerWithAnimation() {
-
-        if(marker != null){
-            marker.remove();
-        }
-
-        LatLng onlyMarker;
-
-        onlyMarker = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-        MarkerOptions opt = new MarkerOptions();
-
-        opt.position(onlyMarker);
-        opt.title("minha localização");
-        opt.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_white_36dp));
-
-        //add the marker and
-        marker = gMap.addMarker(opt);
-
-        CameraUpdate updateCam = CameraUpdateFactory.newLatLngZoom(onlyMarker, ZOOM_MAPS);
-        gMap.animateCamera(updateCam);
-
     }
 
     @Override
@@ -301,4 +282,26 @@ public class MapsFragment extends Fragment implements MapsFragmentView,
         if(presenter.hasToGetNewLocation())
             presenter.requestWeathers(gMap.getCameraPosition().target);
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+    }
+
+    @Override
+    public void onInfoWindowClose(Marker marker) {
+
+    }
+
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        presenter.uiHasDrag();
+        return false;
+    }
+
 }

@@ -89,6 +89,7 @@ public class PreferencesPresenterImpl implements PreferencesPresenter, Preferenc
         this.user = user;
 
         if(validateRegisterData()){
+            this.user.setLastDragPlace(null);
             this.service.registerClient(this.user, this);
         }else{
             this.view.hideLoading();

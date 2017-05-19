@@ -27,8 +27,6 @@ public interface MapsFragmentView extends BaseFragmentView {
 
     void clearAllMarkers();
 
-    void drawMarkerWithAnimation();
-
     void updateLocation(Location location);
 
     Context getContext();
