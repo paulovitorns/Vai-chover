@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="url_api">http://api.openweathermap.org</string>
+    <string name="url_api">http://api.openweathermap.org/</string>
+    <string name="url_icon_weather">http://openweathermap.org/img/w/</string>
+    <string name="url_api_gmaps">https://maps.googleapis.com/maps/api/</string>
     <string name="apiKey">efc366b9d5e6da9daa3ce5b5e6a27318</string>
     <string name="gmapsApiKey">AIzaSyAX7s9OULHU6YOaGRv_7q0nXMfAa9K_a9E</string>
     <integer name="default_api_timeout">45</integer>
     <integer name="default_anim_duration">250</integer>
-
+    <string name="shared_session">shared_session</string>
+    <string name="shared_session_data">shared_session_data</string>
 </resources>

@@ -6,15 +6,18 @@
 
     <!--Common texts-->
     <string name="toast_exit_alert">Pressione novamente para sair</string>
+    <string name="user_name">Olá, visitante!</string>
 
     <!--Title Navigation-->
     <string name="window_lauch">Bem vindo!</string>
-    <string name="window_dash">dashboard</string>
+    <string name="window_dash">Desafio LuizaLabs</string>
+    <string name="window_preferences">Preferências do Usuário</string>
 
     <!--Empty State-->
     <string name="btn_retry">tente novamente</string>
     <string name="btn_conection">conectar a internet</string>
     <string name="btn_search">nova busca</string>
+    <string name="permission_denied">Olá, precisamos da sua localização.\nAssim conseguiremos informar as condições climáticas próximo a você.</string>
     <string name="empty_state">Não encontramos nenhuma localização com a sua busca!</string>
     <string name="server_timeout">O servidor não esta respondendo!</string>
     <string name="server_error">Ocorreu com nosso servidor!</string>
@@ -27,11 +30,32 @@
     <string name="action_info_scale">escala termométrica</string>
     <string name="action_show_map">ver mapa</string>
     <string name="action_show_list">ver lista</string>
+    <string name="action_search">nova busca</string>
+    <string name="action_close">fechar</string>
 
-    <!--Menu-->
-    <string name="menu_home">ínicio</string>
-    <string name="menu_search">buscar região</string>
-    <string name="menu_preferences">suas preferências</string>
-    <string name="menu_logout">sair</string>
+    <!--Hints Profile-->
+    <string name="hint_name">Nome</string>
+    <string name="hint_location">Sua localização padrão</string>
+    <string name="hint_range">Escolha o raio de busca</string>
+    <string name="hint_range_initial">10 km</string>
+    <string name="hint_range_final">50 km</string>
+    <string name="hint_celsius">graus em\ncelsius</string>
+    <string name="hint_fahrenheit">graus em\nfahrenheit</string>
+    <string name="hitn_suggestions">sugestões</string>
 
+    <!--Common Text-->
+    <string name="btn_save">salvar</string>
+    <string name="btn_get_locale">selecionar sua localização atual</string>
+
+    <!--validate msg errors-->
+    <string name="error_empty_name">digite seu nome</string>
+    <string name="error_empty_locale">digite a sua localização padrão</string>
+
+    <!--weather cardview text-->
+    <string name="temp">...º</string>
+    <string name="min_temp">min ...º</string>
+    <string name="max_temp">máx ...º</string>
+
+    <string name="dialog_preferences_title">Olá!</string>
+    <string name="dialog_preferences_description">Seus dados foram salvos com sucesso.</string>
 </resources>

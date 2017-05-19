@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <include layout="@layout/preferences_toolbar_app"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/margin_default"
+            android:paddingRight="@dimen/margin_default"
+            android:paddingTop="@dimen/margin_default"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:id="@+id/containerButtons"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/containerCelsius"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/containerCheckCelsius"
+                        android:orientation="vertical"
+                        android:layout_width="@dimen/container_degrees_width"
+                        android:layout_height="@dimen/container_degrees_height"
+                        android:layout_margin="@dimen/margin_small"
+                        android:padding="@dimen/margin_default"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/view_checked_type"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:weightSum="2">
+
+                        <ImageView
+                            android:id="@+id/iconCelsius"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_celsius"
+                            android:tint="@color/white"/>
+
+                        <TextView
+                            android:id="@+id/txCelsius"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/hint_celsius"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/font_small"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgCheckCelsius"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:layout_alignParentRight="true"
+                        android:tint="@android:color/holo_green_light"
+                        android:src="@drawable/ic_check_circle_white_48dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/containerFahrenheit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/containerCheckFahrenheit"
+                        android:orientation="vertical"
+                        android:layout_width="@dimen/container_degrees_width"
+                        android:layout_height="@dimen/container_degrees_height"
+                        android:layout_margin="@dimen/margin_small"
+                        android:layout_centerHorizontal="true"
+                        android:padding="@dimen/margin_default"
+                        android:background="@drawable/view_check_type"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:weightSum="2">
+
+                        <ImageView
+                            android:id="@+id/iconFahrenheit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_fahrenheit"
+                            android:tint="@color/colorPrimaryDark"/>
+
+                        <TextView
+                            android:id="@+id/txFahrenheit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/hint_fahrenheit"
+                            android:textAlignment="center"
+                            android:textColor="@color/grey"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/font_small"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgCheckFahrenheit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_default"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:tint="@android:color/holo_green_light"
+                        android:src="@drawable/ic_check_circle_white_48dp"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edtLayoutLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColorHint="@color/white">
+
+                        <EditText
+                            android:id="@+id/edtLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edt_common_size"
+                            android:paddingRight="@dimen/margin_default"
+                            android:background="@drawable/view_edittext_background"
+                            android:inputType="textCapSentences"
+                            android:hint="@string/hint_location"
+                            android:textSize="@dimen/font_normal"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ProgressBar
+                        android:id="@+id/edtLoadingIndicator"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/iconClear"
+                        android:layout_width="@dimen/button_small_size"
+                        android:layout_height="@dimen/button_small_size"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_close_white_24dp"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/containerSugests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:text="@string/hitn_suggestions"
+                        android:textSize="@dimen/font_normal"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <TextView
+                        android:id="@+id/txErrorPlaces"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:text="@string/default_var"
+                        android:visibility="gone"
+                        android:textSize="@dimen/font_title"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <Button
+                        android:id="@+id/btnGetLatLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_size"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:visibility="gone"
+                        android:background="@android:color/transparent"
+                        android:text="@string/btn_get_locale"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big"
+                    android:text="@string/hint_range"
+                    android:textSize="@dimen/font_normal"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"/>
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                    android:id="@+id/rangeSeekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_extra"
+                    app:corner_radius="10"
+                    app:min_value="10"
+                    app:max_value="50"
+                    app:bar_color="@color/white"
+                    app:bar_highlight_color="@color/colorPrimary"
+                    app:left_thumb_color="@color/colorAccent"
+                    app:left_thumb_color_pressed="@color/colorPrimary"
+                    app:data_type="_integer"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_micro"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/txInitial"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/hint_range_initial"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"/>
+
+                    <TextView
+                        android:id="@+id/txLast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/hint_range_final"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:background="@color/colorAccent"
+                android:text="@string/btn_save"
+                android:textAllCaps="false"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
