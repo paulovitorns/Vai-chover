@@ -1,8 +1,10 @@
 package br.com.vaichover.ui.presenter.impl;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
@@ -117,6 +119,8 @@ public class MapsPresenterImpl implements MapsPresenter, OnOpenWeatherFinishedLi
     @Override
     public void getMyLocation() {
 
+        LocationManager manager = (LocationManager) view.getContext().getSystemService(Context.LOCATION_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Request Permission
             this.checkIfMapsPermissionsIsGranted();
@@ -124,6 +128,12 @@ public class MapsPresenterImpl implements MapsPresenter, OnOpenWeatherFinishedLi
         }
 
         Location location = LocationServices.FusedLocationApi.getLastLocation(view.getGmapsClient());
+
+        if(location == null)
+            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(location == null)
+            location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if(user != null && user.getPlace()!=null){
             if(user.getLastDragPlace() != null){

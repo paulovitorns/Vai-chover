@@ -32,4 +32,7 @@ public interface DashBoardView extends BaseView {
     void updateWeathers(OpenWeatherMap map);
 
     void updateWeathersForNewLocation(OpenWeatherMap map, UserPreferences user);
+
+    void hideEmptyState();
+
 }
