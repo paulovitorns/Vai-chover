@@ -69,4 +69,18 @@
         android:textSize="@dimen/font_big"
         android:background="@color/colorAccent"/>
 
+    <Button
+        android:id="@+id/btnLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_size"
+        android:paddingRight="@dimen/margin_default"
+        android:paddingLeft="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_big"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        android:text="@string/btn_location_service"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/font_big"
+        android:background="@color/colorAccent"/>
+
 </LinearLayout>

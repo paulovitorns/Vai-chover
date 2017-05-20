@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.squareup.okhttp.internal.Util;
+
 import br.com.vaichover.R;
 import br.com.vaichover.model.ApiResponseType;
 import br.com.vaichover.model.OpenWeatherMap;
@@ -74,19 +76,28 @@ public class MainActivity extends BaseActivity implements DashBoardView {
     @Override
     protected void onResume() {
         super.onResume();
-        if(Utils.isNetworkAvailable()){
-            if (isFullLoaded && presenter.hasLocationPermission()) {
-                emptyStateContainer.setVisibility(View.GONE);
-                frameLayout.setVisibility(View.VISIBLE);
-                this.presenter.tryAgain();
+
+        if(!Utils.isLocationAvailable()){
+            showEptyState(ApiResponseType.NO_LOCATION_AVAILABLE);
+        }else{
+            if(Utils.isNetworkAvailable()){
+                if (isFullLoaded && presenter.hasLocationPermission()) {
+                    emptyStateContainer.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    if(user != null)
+                        this.presenter.tryAgain();
+                    else
+                        this.presenter.updateToolbar();
+                }
             }
         }
+
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 
-        if(this.user == null && presenter.hasLocationPermission())
+        if(this.user == null && presenter.hasLocationPermission() && Utils.isLocationAvailable())
             this.presenter.updateToolbar();
 
         isFullLoaded = true;
@@ -120,28 +131,32 @@ public class MainActivity extends BaseActivity implements DashBoardView {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_list) {
-            item.setVisible(false);
-            MenuItem mapsMenu = menu.findItem(R.id.action_gmaps);
-            mapsMenu.setVisible(true);
-            onTapDashList();
-            return true;
-        }
+        if(Utils.isLocationAvailable() && Utils.isNetworkAvailable()){
+            if (id == R.id.action_list) {
+                item.setVisible(false);
+                MenuItem mapsMenu = menu.findItem(R.id.action_gmaps);
+                mapsMenu.setVisible(true);
+                onTapDashList();
+                return true;
+            }
 
-        if (id == R.id.action_gmaps) {
-            item.setVisible(false);
-            MenuItem listMenu = menu.findItem(R.id.action_list);
-            listMenu.setVisible(true);
-            onTapDashMap();
-            return true;
-        }
+            if (id == R.id.action_gmaps) {
+                item.setVisible(false);
+                MenuItem listMenu = menu.findItem(R.id.action_list);
+                listMenu.setVisible(true);
+                onTapDashMap();
+                return true;
+            }
 
-        if(id == R.id.action_scale){
-            Intent intent = new Intent(this, PreferencesActivity.class);
-            intent.putExtra(UserPreferences.KEY, user);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
-            return true;
+            if(id == R.id.action_scale){
+                Intent intent = new Intent(this, PreferencesActivity.class);
+                intent.putExtra(UserPreferences.KEY, user);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
+                return true;
+            }
+        }else{
+            Toast.makeText(this, getString(R.string.no_connection_warning), Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -229,6 +244,12 @@ public class MainActivity extends BaseActivity implements DashBoardView {
     @Override
     public void updateWeathersForNewLocation(OpenWeatherMap map, UserPreferences user) {
         this.presenter.updateWeathersAndUserData(map, user);
+    }
+
+    @Override
+    public void hideEmptyState() {
+        emptyStateContainer.setVisibility(View.GONE);
+        frameLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

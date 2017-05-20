@@ -9,7 +9,8 @@ import br.com.vaichover.VaiChoverApp;
  */
 
 public enum ApiResponseType {
-    PERMISSION_DENIED(R.drawable.ic_cloud_off_white_48dp, VaiChoverApp.getContext().getString(R.string.permission_denied), true),
+    NO_LOCATION_AVAILABLE(R.drawable.ic_location_off_white_48dp, VaiChoverApp.getContext().getString(R.string.no_location), false),
+    PERMISSION_DENIED(R.drawable.ic_location_off_white_48dp, VaiChoverApp.getContext().getString(R.string.permission_denied), true),
     EMPTY_STATE(R.drawable.ic_cloud_off_white_48dp, VaiChoverApp.getContext().getString(R.string.empty_state), true),
     SERVER_TIMEOUT(R.drawable.ic_access_time_white_48dp, VaiChoverApp.getContext().getString(R.string.server_timeout), true),
     SERVER_ERROR(R.drawable.ic_cloud_off_white_48dp, VaiChoverApp.getContext().getString(R.string.server_error), true),

@@ -101,10 +101,12 @@ public class PreferencesActivity extends BaseActivity implements PreferencesView
             }
         });
 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null) {
             user = (UserPreferences) savedInstanceState.getSerializable(UserPreferences.KEY);
-        else
-            user = (UserPreferences) getIntent().getExtras().getSerializable(UserPreferences.KEY);
+        }else {
+            if(getIntent().getExtras() != null)
+                user = (UserPreferences) getIntent().getExtras().getSerializable(UserPreferences.KEY);
+        }
 
         this.presenter = new PreferencesPresenterImpl(this, user);
 

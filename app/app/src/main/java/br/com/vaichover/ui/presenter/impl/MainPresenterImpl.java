@@ -34,7 +34,6 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
     private OpenWeatherMap          openWeatherMap;
     private OpenWeatherService      openWeatherService;
     private UserPreferences         user;
-    private boolean                 hasLocationPermission;
 
     public MainPresenterImpl(DashBoardView view, UserPreferences user, OpenWeatherMap map) {
         this.view = view;
@@ -84,7 +83,6 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
 
         if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             view.requestLocationPermission();
-            this.hasLocationPermission = false;
             return;
         }
 
@@ -98,6 +96,8 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
             this.user.getPlace().getResult().getGeometry().setLat(utilLocation.getLatitude());
             this.user.getPlace().getResult().getGeometry().setLng(utilLocation.getLongitude());
             this.view.showDegreesPreferencesIcon(user);
+        }else{
+            this.view.showEptyState(ApiResponseType.NO_LOCATION_AVAILABLE);
         }
     }
 
@@ -108,10 +108,10 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
 
     @Override
     public void updateToolbar() {
-
         if(user != null) {
             this.view.showDegreesPreferencesIcon(user);
         }else {
+            this.view.showLoading();
             this.startUserPreferences();
         }
 
@@ -168,6 +168,7 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
         this.openWeatherMap = openWeatherMap;
         this.view.updateWeathers(openWeatherMap);
         prepareDefaultFragment();
+        this.view.hideEmptyState();
         this.view.hideLoading();
     }
 

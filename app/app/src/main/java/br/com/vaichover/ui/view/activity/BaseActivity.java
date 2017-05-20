@@ -38,15 +38,17 @@ abstract class BaseActivity extends AppCompatActivity {
     @Nullable
     @Bind(R.id.emptyStateContainer) LinearLayout emptyStateContainer;
     @Nullable
-    @Bind(R.id.iconError)   ImageView   iconError;
+    @Bind(R.id.iconError)       ImageView   iconError;
     @Nullable
-    @Bind(R.id.txError)     TextView    txError;
+    @Bind(R.id.txError)         TextView    txError;
     @Nullable
-    @Bind(R.id.btnReTry)    Button      btnReTry;
+    @Bind(R.id.btnReTry)        Button      btnReTry;
     @Nullable
-    @Bind(R.id.btnConectar) Button      btnConectar;
+    @Bind(R.id.btnConectar)     Button      btnConectar;
     @Nullable
-    @Bind(R.id.btnNovaBusca) Button      btnNovaBusca;
+    @Bind(R.id.btnNovaBusca)    Button      btnNovaBusca;
+    @Nullable
+    @Bind(R.id.btnLocation)     Button      btnLocation;
 
     public ActionBar        actionBar;
     private ProgressDialog mProgressDialog;
@@ -208,6 +210,12 @@ abstract class BaseActivity extends AppCompatActivity {
         }else{
             btnNovaBusca.setVisibility(View.GONE);
         }
+
+        if(error == ApiResponseType.NO_LOCATION_AVAILABLE){
+            btnLocation.setVisibility(View.VISIBLE);
+        }else{
+            btnLocation.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -231,8 +239,19 @@ abstract class BaseActivity extends AppCompatActivity {
      */
     @Nullable
     @OnClick(R.id.btnConectar)
-    public void conectar(){
+    public void connect(){
         startActivity(new Intent(Settings.ACTION_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
     }
 
+    /**
+     * Ativar a localização
+     * <p>
+     *     Metodo usado para abrir as configurações do app e ativar a localização do usuário
+     * </p>
+     */
+    @Nullable
+    @OnClick(R.id.btnLocation)
+    public void activeLocation(){
+        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
+    }
 }

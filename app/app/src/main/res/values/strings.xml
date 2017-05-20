@@ -16,7 +16,10 @@
     <!--Empty State-->
     <string name="btn_retry">tente novamente</string>
     <string name="btn_conection">conectar a internet</string>
+    <string name="btn_location_service">ativar a localização</string>
     <string name="btn_search">nova busca</string>
+    <string name="no_location">Seus serviços de localização não estão ativos.</string>
+    <string name="no_connection_warning">você não esta conectado</string>
     <string name="permission_denied">Olá, precisamos da sua localização.\nAssim conseguiremos informar as condições climáticas próximo a você.</string>
     <string name="empty_state">Não encontramos nenhuma localização com a sua busca!</string>
     <string name="server_timeout">O servidor não esta respondendo!</string>
