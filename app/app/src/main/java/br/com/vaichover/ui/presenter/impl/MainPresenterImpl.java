@@ -97,7 +97,7 @@ public class MainPresenterImpl implements MainPresenter, OnOpenWeatherFinishedLi
             this.user.getPlace().getResult().getGeometry().setLng(utilLocation.getLongitude());
             this.view.showDegreesPreferencesIcon(user);
         }else{
-            this.view.showEptyState(ApiResponseType.NO_LOCATION_AVAILABLE);
+            this.onApiError(ApiResponseType.NO_LOCATION_AVAILABLE);
         }
     }
 

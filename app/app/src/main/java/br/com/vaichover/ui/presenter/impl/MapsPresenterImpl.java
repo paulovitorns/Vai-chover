@@ -140,6 +140,10 @@ public class MapsPresenterImpl implements MapsPresenter, OnOpenWeatherFinishedLi
                 location.setLatitude(user.getLastDragPlace().getLat());
                 location.setLongitude(user.getLastDragPlace().getLng());
             }else{
+
+                if(location == null)
+                    location = new Location(user.getPlace().getResult().getFormatted_address());
+
                 location.setLatitude(user.getPlace().getResult().getGeometry().getLat());
                 location.setLongitude(user.getPlace().getResult().getGeometry().getLng());
             }
