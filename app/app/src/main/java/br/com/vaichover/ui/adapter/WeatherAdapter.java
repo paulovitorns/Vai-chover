@@ -44,6 +44,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         if(result != null){
 
             holder.txLocate.setText(result.getName());
+            holder.txDistanceFromMe.setText(String.valueOf(Math.round(result.getDistance()))+"km");
             holder.txWeatherDesc.setText(result.getWeather().get(0).getDescription());
 
             String txtemp = context.getString(R.string.temp);
@@ -73,12 +74,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        @Bind(R.id.txLocate)        TextView    txLocate;
-        @Bind(R.id.txWeatherDesc)   TextView    txWeatherDesc;
-        @Bind(R.id.txTemp)          TextView    txTemp;
-        @Bind(R.id.txMin)           TextView    txMin;
-        @Bind(R.id.txMax)           TextView    txMax;
-        @Bind(R.id.weatherIcon)     ImageView   weatherIcon;
+        @Bind(R.id.txLocate)            TextView    txLocate;
+        @Bind(R.id.txDistanceFromMe)    TextView    txDistanceFromMe;
+        @Bind(R.id.txWeatherDesc)       TextView    txWeatherDesc;
+        @Bind(R.id.txTemp)              TextView    txTemp;
+        @Bind(R.id.txMin)               TextView    txMin;
+        @Bind(R.id.txMax)               TextView    txMax;
+        @Bind(R.id.weatherIcon)         ImageView   weatherIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -1,7 +1,10 @@
 package br.com.vaichover.model;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.vaichover.business.api.vo.response.OpenWeatherMapResponseVO;
@@ -35,6 +38,21 @@ public class OpenWeatherMap implements Serializable {
         for (OpenWeatherMapResultResponseVO responseVO : list){
             this.list.add(new OpenWeatherMapResult(responseVO));
         }
+    }
+
+    public void reorderBasedOnDistance(Location location){
+        for (OpenWeatherMapResult result : this.list){
+            Location locationEnd = new Location("end");
+            locationEnd.setLatitude(result.getCoord().getLat());
+            locationEnd.setLongitude(result.getCoord().getLon());
+
+            result.setDistance((location.distanceTo(locationEnd) / 1000.0));
+        }
+        this.repopulateDataBasedOnDistante();
+    }
+
+    public void repopulateDataBasedOnDistante(){
+        Collections.sort(this.list, Collections.<OpenWeatherMapResult>reverseOrder());
     }
 
     public String getMessage() {

@@ -1,5 +1,7 @@
 package br.com.vaichover.model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import br.com.vaichover.business.api.vo.response.OpenWeatherMoreInfoResponseVO;
  * Autor : Paulo Sales - paulovitorns@gmail.com
  */
 
-public class OpenWeatherMapResult implements Serializable {
+public class OpenWeatherMapResult implements Serializable, Comparable<OpenWeatherMapResult> {
 
     public static final String KEY = OpenWeatherMapResult.class.getSimpleName();
 
@@ -26,6 +28,7 @@ public class OpenWeatherMapResult implements Serializable {
     private OpenWeatherVolume           snow;
     private OpenWeatherClouds           clouds;
     private List<OpenWeatherMoreInfo>   weather;
+    private double                      distance;
 
     public OpenWeatherMapResult(OpenWeatherMapResultResponseVO responseVO) {
         this.id         = responseVO.id;
@@ -92,5 +95,26 @@ public class OpenWeatherMapResult implements Serializable {
 
     public List<OpenWeatherMoreInfo> getWeather() {
         return weather;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(@NonNull OpenWeatherMapResult openWeatherMapResult) {
+        if (distance > openWeatherMapResult.getDistance()) {
+            return -1;
+        }
+        else if (distance <  openWeatherMapResult.getDistance()) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
     }
 }

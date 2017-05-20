@@ -40,6 +40,15 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/font_big"/>
 
+            <TextView
+                android:id="@+id/txDistanceFromMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@string/default_var"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_normal"/>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

@@ -74,4 +74,7 @@ public class Utils {
 
         return (gps_enabled || network_enabled) ? true : false;
     }
+
+
+
 }
